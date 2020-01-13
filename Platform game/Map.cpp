@@ -123,39 +123,37 @@ std::ostream& operator<<(std::ostream& os, const Player& pl)
 	os << c;
 	return os;
 }
-
-int Map::input()
+void Map::move_cursor(Coord p)
 {
-	int pulses = 1000;
-	for (int i = 0; i < pulses; i++) 
-	{
-		if (GetAsyncKeyState(static_cast<int>(Keyboard::up0)) != 0 || GetAsyncKeyState(static_cast<int>(Keyboard::up1)) != 0 || //enum is  strongly typed var 
-			GetAsyncKeyState(static_cast<int>(Keyboard::up2)) != 0)
+	COORD cord;
+	cord.X = p.x;
+	cord.Y = p.y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cord);
+}
+
+int Map::input(char key)
+{
+		if (key=='w' || key=='W'|| key==' '||key==72)
 		{
 			user.go_jump();
-			break;
 		}
-		else if (GetAsyncKeyState(static_cast<int>(Keyboard::down0)) != 0 || GetAsyncKeyState(static_cast<int>(Keyboard::down1)) != 0)
+		else if (key == 's' || key == 'S' )
 		{
-			user.go_fall();
-			break;
+			//user.go_fall();
 		}
-		else if (GetAsyncKeyState(static_cast<int>(Keyboard::right0)) != 0 || GetAsyncKeyState(static_cast<int>(Keyboard::right1)) != 0)
+		else if (key == 'd' || key == 'D' || key == 77)
 		{
 			user.go_right();
-			break;
 		}
-		else if (GetAsyncKeyState(static_cast<int>(Keyboard::left0)) != 0 || GetAsyncKeyState(static_cast<int>(Keyboard::left1)) != 0)
+		else if (key == 'a' || key == 'A'||key == 75)
 		{
 			user.go_left();
-			break;
 		}
-		else if (GetAsyncKeyState(static_cast<int>(Keyboard::esc)))
+		else if (key == 27)
 		{
 			return 0;
 		}
-		Sleep(100);
 		std::cout << user;
-	}
+		Sleep(100);
 	return 1;
 }

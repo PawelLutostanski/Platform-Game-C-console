@@ -5,11 +5,17 @@ int main()
 {
 	Map gameMap("map.txt");
 	gameMap.setup();
-	cin.get();
+	
 	cout << gameMap;
 	while (gameMap.game_stat())
 	{
-		if (!gameMap.input())
+		char key = NULL;
+		if (_kbhit())
+		{
+			(key = _getch());
+		}
+		
+		if (!gameMap.input(key))
 		{
 			gameMap.game_over();
 		}

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <conio.h>
 #include <windows.h>
 #include <list>
 #include <cstddef>
@@ -22,10 +23,6 @@ private:
 	Player user;
 	bool doGame;
 public:
-	enum class Keyboard {
-		up0 = 0x57, up1 = VK_SPACE, up2 = VK_UP, down0 = 0x53, down1 = VK_DOWN,
-		right0 = 0x44, right1 = VK_RIGHT, left0 = 0x41, left1 = VK_LEFT, esc= VK_ESCAPE
-	};
 	Map(std::string map_file_name);
 	friend std::ostream& operator<<(std::ostream& os, const Map& m);
 	friend std::ostream& operator<<(std::ostream& os, std::list <Block> &bl);
@@ -38,21 +35,14 @@ public:
 	void destroy_element(Coord where_it_is);
 	//friend class MapElement;
 
-	static void move_cursor(Coord p)
-	{
-		COORD cord;
-		cord.X = p.x;
-		cord.Y = p.y;
-		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cord);
-	}
+	static void move_cursor(Coord p);
 	
-
 	//void show_user();
 	void setup() 
 	{
 		doGame = true;
 	}
-	int input();
+	int input(char key);
 	static void logic()
 	{
 	}
