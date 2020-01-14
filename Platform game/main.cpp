@@ -4,10 +4,9 @@ using namespace std;
 int main()
 {
 	Map gameMap("map.txt");
-	gameMap.setup();
 	
 	cout << gameMap;
-	while (gameMap.game_stat())
+	while (gameMap.player_status())
 	{
 		char key = NULL;
 		if (_kbhit())
@@ -17,9 +16,12 @@ int main()
 		
 		if (!gameMap.input(key))
 		{
-			gameMap.game_over();
+			break;
 		}
+
+	
 	}
+	Map::move_cursor(Coord{ 0,0 });
 	cin.get();
 	system("CLS");
 	

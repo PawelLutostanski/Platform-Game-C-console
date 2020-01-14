@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream>
+//#include <iostream>
 #include <fstream>
 #include <string>
 #include <conio.h>
@@ -17,33 +17,39 @@ class Map
 {
 
 private:
-	unsigned int maxX, maxY;
+	Coord limit;
 	std::list <Block> blockList;
-	std::list <Spikes> spikeList;
+	std::list <Spikes> spikesList;
 	Player user;
-	bool doGame;
 public:
 	Map(std::string map_file_name);
-	friend std::ostream& operator<<(std::ostream& os, const Map& m);
+	
+
+	/*template <class T>
+	friend std::ostream& operator<<(std::ostream& os, const std::list <T> &bl)
+	{
+		
+		std::list<T> copyL(bl);//required because bl const
+		std::list <T>::iterator it;
+		for (it = copyL.begin(); it != copyL.end(); ++it)
+		{
+			Map::move_cursor(it->show_loc());
+			os << it->show_shape();
+		}
+		return os;
+		
+	}*/
 	friend std::ostream& operator<<(std::ostream& os, std::list <Block> &bl);
 	friend std::ostream& operator<<(std::ostream& os, std::list <Spikes> &sl);
-	friend std::ostream& operator<<(std::ostream& os, const Player& pl);
-//protected:
-	bool game_stat() { return doGame; }
-	void game_over() { doGame = 0; }
+	friend std::ostream& operator<<(std::ostream& os, const Map& m);
 	
-	void destroy_element(Coord where_it_is);
-	//friend class MapElement;
-
+	
 	static void move_cursor(Coord p);
 	
 	//void show_user();
-	void setup() 
-	{
-		doGame = true;
-	}
+	
 	int input(char key);
-	static void logic()
-	{
-	}
+	bool player_status();
+	bool col_with_spikes(Coord p);
+	bool col_with_blocks(Coord p);
 };

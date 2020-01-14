@@ -135,6 +135,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapElement.h" />
+    <ClInclude Include="Coord.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Spikes.h" />

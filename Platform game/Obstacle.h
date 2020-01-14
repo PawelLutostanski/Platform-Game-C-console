@@ -1,10 +1,10 @@
 #pragma once
-#include "MapElement.h"
+#include "Player.h"
 class Obstacle :
 	public MapElement
 {
 public:
-	//virtual void player_touch();
+	virtual bool collision(Player &p) {return 1; };
 	Obstacle(Coord loc,char c) :MapElement(loc, c) {}
 	Obstacle(const Obstacle &o) :MapElement(o) {}
 };

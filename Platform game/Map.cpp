@@ -9,7 +9,7 @@ struct NoFileException : public std::exception {
 	}
 };
 
-Map::Map(std::string mapFileName):maxX{0},maxY{0},doGame{1}
+Map::Map(std::string mapFileName) :limit{ Coord{0,0} }
 {
 	try {
 		std::ifstream mapFile;
@@ -41,20 +41,20 @@ Map::Map(std::string mapFileName):maxX{0},maxY{0},doGame{1}
 					}
 					if (c == '*' || c == '8')
 					{
-						spikeList.push_back(temp);
+						spikesList.push_back(temp);
 					}
 				}
 				else
 				{
 
 					j++;
-					if (maxX < i) { maxX = i; }
+					if (limit.x < i) { limit.x = i; }
 					i = 0;
 				}
 				i++;
 
 			}
-			maxY = j;
+			limit.y = j;
 			mapFile.close();
 		}
 		else {
@@ -67,19 +67,7 @@ Map::Map(std::string mapFileName):maxX{0},maxY{0},doGame{1}
 		return;
 	}
 }
-/*
-template <class T>
-std::ostream& operator<<(std::ostream& os, const std::list <T> &bl)
-{
-	std::list<T> copyL(bl);//required because bl const
-	std::list <Block>::iterator it;
-	for (it = copyL.begin(); it != copyL.end(); ++it)
-	{
-		Map::move_cursor(it->show_loc());
-		os << it->show_shape();
-	}
-	return os;
-}*/
+
 std::ostream& operator<<(std::ostream& os,const std::list <Block> &bl)
 {
 	std::list<Block> copyL(bl);//required because bl const
@@ -107,22 +95,12 @@ std::ostream& operator<<(std::ostream& os,const std::list <Spikes> &sl)
 std::ostream& operator<<(std::ostream& os, const Map& m)
 {
 	os << m.blockList;
-	os << m.spikeList;
-	unsigned int mx = m.maxX+5;
-	unsigned int my = m.maxY+5;
-	Coord p{ mx,my };
-	Map::move_cursor(p);//put cursor away
-	//Map::move_cursor(r);
+	os << m.spikesList;
+
+	Map::move_cursor(Coord{ m.limit.x+5,m.limit.y+5 });//put cursor away
 	return os;
 }
-std::ostream& operator<<(std::ostream& os, const Player& pl)
-{
-	Player temp(pl);
-	Map::move_cursor(temp.show_loc());
-	char c = temp.show_shape();
-	os << c;
-	return os;
-}
+
 void Map::move_cursor(Coord p)
 {
 	COORD cord;
@@ -133,27 +111,135 @@ void Map::move_cursor(Coord p)
 
 int Map::input(char key)
 {
-		if (key=='w' || key=='W'|| key==' '||key==72)
+	
+	Coord temp(user.show_loc());
+	move_cursor(temp);
+	std::cout << ' ';
+	if (user.lift_of_player() > 0)
+	{
+		temp.y -= 1;
+		if (col_with_spikes(temp)) { return 0; }
+		if (!col_with_blocks(temp))
 		{
 			user.go_jump();
 		}
+		else
+		{
+			temp.y += 1;
+		}
+	}
+		if (key=='w' || key=='W'|| key==' '||key==72)
+		{
+			temp.y -= 1;
+			if (col_with_spikes(temp)) { return 0; }
+			if (!col_with_blocks(temp))
+			{
+				
+				if (user.lift_of_player() == 0)
+				{
+					user.go_jump();
+				}
+				user.lift_set();
+			}
+			else 
+			{
+				temp.y += 1;
+			}
+		}
 		else if (key == 's' || key == 'S' )
 		{
-			//user.go_fall();
+			/*temp.y += 1;
+			if (col_with_spikes(temp)) { return 0; }
+			if (!col_with_blocks(temp))
+			{
+				user.go_fall();
+			}*/
 		}
 		else if (key == 'd' || key == 'D' || key == 77)
 		{
-			user.go_right();
+			temp.x += 1;
+			if (col_with_spikes(temp)) { return 0; }
+			if (!col_with_blocks(temp))
+			{
+				user.go_right();
+			}	
+			else
+			{
+				temp.x -= 1;
+			}
 		}
 		else if (key == 'a' || key == 'A'||key == 75)
 		{
-			user.go_left();
+			temp.x -= 1;
+			if (col_with_spikes(temp)) { return 0; }
+			if (!col_with_blocks(temp))
+			{
+				user.go_left();
+			}
+			else
+			{
+				temp.x += 1;
+			}
+			
 		}
 		else if (key == 27)
 		{
+			temp.x -= 1;
+			col_with_spikes(temp);
 			return 0;
 		}
+		if (user.lift_of_player() == 0)
+		{
+			temp.y += 1;
+			if (col_with_spikes(temp)) { return 0; }
+			if (!col_with_blocks(temp))
+			{
+				user.go_fall();
+			}
+			else
+			{
+				temp.y -= 1;
+			}
+		}
+		
+
+		Map::move_cursor(user.show_loc());
 		std::cout << user;
+	
+		Map::move_cursor(Coord{ limit.x + 5,limit.y + 5 });//put cursor away
 		Sleep(100);
+
 	return 1;
+}
+
+bool Map::player_status()
+{
+	if (user.check_if_fail(limit)) { return 0; }//he fails
+	return 1;
+}
+
+bool Map::col_with_spikes(Coord p)
+{
+	std::list <Spikes>::iterator it;
+	for (it = spikesList.begin(); it != spikesList.end(); ++it)
+	{
+		if (it->location.x == p.x && it->location.y == p.y)
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
+bool Map::col_with_blocks(Coord p)
+{
+	std::list <Block>::iterator it;
+	for (it = blockList.begin(); it != blockList.end(); ++it)
+	{
+		if (it->location.x == p.x && it->location.y == p.y)
+		{
+			return 1;
+		}
+	}
+	return 0;
 }
