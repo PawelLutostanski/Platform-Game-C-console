@@ -7,15 +7,24 @@ std::ostream& operator<<(std::ostream& os, const Player& pl)
 	os << c;
 	return os;
 }
+void Player::finish_jump()
+{
+	alreadyJumped = 0;
+	lift = 0;
+}
+bool Player::show_if_jumped()
+{
+	return alreadyJumped;
+}
 void Player::lift_set()
 {
-	lift = 5;
+	lift = 7;
 }
 int Player::lift_of_player()
 {
 	if (lift > 0)
 	{ 
-		lift--; 
+		--lift; 
 	}
 	return lift;
 }
@@ -34,6 +43,7 @@ bool Player::go_right()
 
 bool Player::go_jump()
 {
+	alreadyJumped = 1;
 	location.y -= 1;
 	return 1;
 }

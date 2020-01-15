@@ -1,5 +1,4 @@
 #include <exception>
-#include <conio.h>
 #include "Map.h"
 
 
@@ -109,7 +108,7 @@ void Map::move_cursor(Coord p)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cord);
 }
 
-int Map::input(char key)
+bool Map::input()
 {
 	
 	Coord temp(user.show_loc());
@@ -117,90 +116,88 @@ int Map::input(char key)
 	std::cout << ' ';
 	if (user.lift_of_player() > 0)
 	{
+		
 		temp.y -= 1;
-		if (col_with_spikes(temp)) { return 0; }
+		if (col_with_spikes(temp)) 
+		{ 
+			return 0; 
+		}
 		if (!col_with_blocks(temp))
 		{
 			user.go_jump();
+
 		}
 		else
 		{
 			temp.y += 1;
 		}
 	}
-		if (key=='w' || key=='W'|| key==' '||key==72)
+	if (((GetAsyncKeyState(VK_UP)|| GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_SPACE))&& user.lift_of_player()==0)&&user.show_if_jumped()==0)//arrow up or w or space
+	{
+		temp.y -= 1;
+		if (col_with_spikes(temp)) { return 0; }
+		if (!col_with_blocks(temp))
 		{
-			temp.y -= 1;
-			if (col_with_spikes(temp)) { return 0; }
-			if (!col_with_blocks(temp))
+			if (user.lift_of_player() == 0)
 			{
-				
-				if (user.lift_of_player() == 0)
-				{
 					user.go_jump();
-				}
+			}
 				user.lift_set();
-			}
-			else 
-			{
-				temp.y += 1;
-			}
 		}
-		else if (key == 's' || key == 'S' )
+		else //if collision then coord shouldn't change
 		{
-			/*temp.y += 1;
-			if (col_with_spikes(temp)) { return 0; }
-			if (!col_with_blocks(temp))
-			{
-				user.go_fall();
-			}*/
+			temp.y += 1;	
 		}
-		else if (key == 'd' || key == 'D' || key == 77)
+	}
+	if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState(0x44))//arrow right or d
+	{
+		temp.x += 1;
+		if (col_with_spikes(temp)) { return 0; }
+		if (!col_with_blocks(temp))
+		{
+			user.go_right();
+		}	
+		else //if collision then coord shouldn't change
+		{
+			temp.x -= 1;
+		}
+	}
+	if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState(0x41))//arrow left or a
+	{
+		temp.x -= 1;
+		if (col_with_spikes(temp)) { return 0; }
+		if (!col_with_blocks(temp))
+		{
+			user.go_left();
+		}
+		else //if collision then coord shouldn't change
 		{
 			temp.x += 1;
-			if (col_with_spikes(temp)) { return 0; }
-			if (!col_with_blocks(temp))
-			{
-				user.go_right();
-			}	
-			else
-			{
-				temp.x -= 1;
-			}
 		}
-		else if (key == 'a' || key == 'A'||key == 75)
-		{
-			temp.x -= 1;
-			if (col_with_spikes(temp)) { return 0; }
-			if (!col_with_blocks(temp))
-			{
-				user.go_left();
-			}
-			else
-			{
-				temp.x += 1;
-			}
 			
-		}
-		else if (key == 27)
-		{
-			temp.x -= 1;
-			col_with_spikes(temp);
+	}
+	if (GetAsyncKeyState(VK_ESCAPE))
+	{
+			temp.x = 0;
+			temp.y = 0;
 			return 0;
-		}
-		if (user.lift_of_player() == 0)
+	}
+
+
+	if (user.lift_of_player() == 0)//checks if player is not jumping and does gravity
+	{
+		temp.y += 1;
+		if (col_with_spikes(temp)) { return 0; }
+		if (!col_with_blocks(temp))
 		{
-			temp.y += 1;
-			if (col_with_spikes(temp)) { return 0; }
-			if (!col_with_blocks(temp))
-			{
 				user.go_fall();
-			}
-			else
-			{
-				temp.y -= 1;
-			}
 		}
+		else
+		{
+			user.finish_jump();//if bellow is 
+			temp.y -= 1;
+		}
+	}
 		
 
 		Map::move_cursor(user.show_loc());
@@ -225,6 +222,7 @@ bool Map::col_with_spikes(Coord p)
 	{
 		if (it->location.x == p.x && it->location.y == p.y)
 		{
+			it->collision(user);
 			return 1;
 		}
 	}
@@ -238,6 +236,7 @@ bool Map::col_with_blocks(Coord p)
 	{
 		if (it->location.x == p.x && it->location.y == p.y)
 		{
+			it->collision(user);
 			return 1;
 		}
 	}

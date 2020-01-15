@@ -1,52 +1,67 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Block">
-    <Position X="8.75" Y="4.5" Width="2.5" />
+    <Position X="10.75" Y="5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Block.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Map">
-    <Position X="2.25" Y="1.25" Width="1.5" />
+    <Position X="6.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAAAAAgAABAAAAgAAQIgAAAAACAAABAAAAAAAAAgAUA=</HashCode>
+      <HashCode>AAAAAAABABQAAAAAAQAAAAAAAAEACBBAAAAAAAAAAUA=</HashCode>
       <FileName>Map.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MapElement">
-    <Position X="5.5" Y="2" Width="2.5" />
+    <Position X="8.25" Y="2" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AEAAgAAAAAAAAAAAAAAIAAACAAAAACAAAAAAABAABAA=</HashCode>
+      <HashCode>AEAAgAgAAAAAAAAAAAAIAAACIAAAACAAAAAAAAAABAA=</HashCode>
       <FileName>MapElement.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Obstacle">
-    <Position X="10.5" Y="2.5" Width="1.5" />
+    <Position X="13" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <HashCode>AgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Obstacle.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Spikes">
-    <Position X="11.75" Y="4.5" Width="2.5" />
+    <Position X="14" Y="5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Spikes.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Player">
-    <Position X="13.5" Y="0.75" Width="1.5" />
+    <Position X="15.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACgAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAQAAgAA=</HashCode>
+      <HashCode>ACAACiAACAACCAAAAAAAAAAIAAAAAAAAAgAAAQAAAAA=</HashCode>
       <FileName>Player.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="Coord" Collapsed="true">
-    <Position X="6.25" Y="0.75" Width="1.5" />
+  <Class Name="Foe">
+    <Position X="18.25" Y="4" Width="1.5" />
+    <InheritanceLine Type="Spikes" FixedFromPoint="true">
+      <Path>
+        <Point X="16.5" Y="5.875" />
+        <Point X="16.875" Y="5.875" />
+        <Point X="16.875" Y="4.563" />
+        <Point X="18.25" Y="4.563" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Foe.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Coord">
+    <Position X="6.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQABgAAAAAAA=</HashCode>
-      <FileName>MapElement.h</FileName>
+      <FileName>Coord.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Font Name="Segoe UI" Size="9" />

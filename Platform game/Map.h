@@ -48,7 +48,7 @@ public:
 	
 	//void show_user();
 	
-	int input(char key);
+	bool input();
 	bool player_status();
 	bool col_with_spikes(Coord p);
 	bool col_with_blocks(Coord p);

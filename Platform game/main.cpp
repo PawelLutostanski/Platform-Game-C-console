@@ -8,13 +8,9 @@ int main()
 	cout << gameMap;
 	while (gameMap.player_status())
 	{
-		char key = NULL;
-		if (_kbhit())
-		{
-			(key = _getch());
-		}
 		
-		if (!gameMap.input(key))
+		
+		if (!gameMap.input())
 		{
 			break;
 		}
