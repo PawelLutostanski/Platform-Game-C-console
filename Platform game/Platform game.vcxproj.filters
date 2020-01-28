@@ -13,31 +13,34 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\obstacles">
+      <UniqueIdentifier>{1a8e0579-9726-4e32-8c20-5e71f8709d9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\obstacles">
+      <UniqueIdentifier>{4c2eabae-6f94-401e-848d-c385f268b88c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\classd">
+      <UniqueIdentifier>{72084a4a-4fe5-4cf8-98dc-94bd99a880f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Map.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="MapElement.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Obstacle.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Spikes.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Finish.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Pliki źródłowe\obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="Spikes.cpp">
+      <Filter>Pliki źródłowe\obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Pliki źródłowe\obstacles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,28 +50,28 @@
     <ClInclude Include="MapElement.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Spikes.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Coord.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Pliki nagłówkowe\obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Pliki nagłówkowe\obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="Spikes.h">
+      <Filter>Pliki nagłówkowe\obstacles</Filter>
+    </ClInclude>
     <ClInclude Include="Finish.h">
+      <Filter>Pliki nagłówkowe\obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Pliki źródłowe\classd</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -1,0 +1,12 @@
+﻿  Map.cpp
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\block.h(8): warning C4309: 'argument': truncation of constant value
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\block.h(9): warning C4309: 'argument': truncation of constant value
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\finish.h(8): warning C4309: 'argument': truncation of constant value
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\finish.h(9): warning C4309: 'argument': truncation of constant value
+  main.cpp
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\block.h(8): warning C4309: 'argument': truncation of constant value
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\block.h(9): warning C4309: 'argument': truncation of constant value
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\finish.h(8): warning C4309: 'argument': truncation of constant value
+h:\#programy\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\project\platform game\finish.h(9): warning C4309: 'argument': truncation of constant value
+  Generating Code...
+  Platform game.vcxproj -> H:\#PROGRAMY\84a1f143-gr12-repo-master (1)\84a1f143-gr12-repo-master\Project\x64\Debug\Platform game.exe

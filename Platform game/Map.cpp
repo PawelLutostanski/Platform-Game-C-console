@@ -1,21 +1,14 @@
-#include <exception>
 #include "Map.h"
 
 
-struct NoFileException : public std::exception {
-	const char * what() const throw () {
-		return "No \"map.txt\" file found";
-	}
-};
-
-Map::Map(std::string mapFileName) :limit{ Coord{0,0} }
+Map::Map(std::string mapFileName) :limit{ Coord{0,0} }, user{ { Coord{0,0} } }//user is 0 because if not find then fails map imediatelly
 {
 	try {
 		std::ifstream mapFile;
 		mapFile.open(mapFileName);
-		//spikeList = new std::list<Spikes>;
 		if (mapFile.good())
 		{
+
 			char c;
 			unsigned int i{ 1 }, j{ 1 };
 			Coord whereNow{ 0, 0};
@@ -28,19 +21,30 @@ Map::Map(std::string mapFileName) :limit{ Coord{0,0} }
 				{
 					Coord temp{ i,j };
 					whereNow = temp;
-					if ((c == 'P' || c == 'p')&&!findPlayer)
+					if ((c == 'P'||c=='p')&&!findPlayer)
 					{
 						findPlayer = 1;
 						Player p(temp);
 						user=p;
 					}
-					if (c == '#' || c == '3')
+					if (c == '#')
 					{
-						blockList.push_back(temp);
+						Block* temporary = new Block(temp);
+						Obstacle *ptr = temporary;
+						obstList.push_back(ptr);
 					}
-					if (c == '*' || c == '8')
+					if (c == '*')
 					{
-						spikesList.push_back(temp);
+						Spikes* temporary = new Spikes(temp);
+						Obstacle *ptr = temporary;
+						obstList.push_back(ptr);
+					}
+					if ((c == 'F'||c=='f') && !findFinish)
+					{
+						findFinish = 1;
+						succes = new Finish(temp);
+						Obstacle *ptr = succes;
+						obstList.push_back(ptr);
 					}
 				}
 				else
@@ -51,7 +55,6 @@ Map::Map(std::string mapFileName) :limit{ Coord{0,0} }
 					i = 0;
 				}
 				i++;
-
 			}
 			limit.y = j;
 			mapFile.close();
@@ -62,40 +65,39 @@ Map::Map(std::string mapFileName) :limit{ Coord{0,0} }
 	}
 	catch (NoFileException error)
 	{
-		std::cin.get();
+		Map::move_cursor(Coord(0, 0));
+		std::cout <<"No file found please press enter";
+		while (!GetAsyncKeyState(VK_RETURN)) {}//till enter press
 		return;
 	}
 }
 
-std::ostream& operator<<(std::ostream& os,const std::list <Block> &bl)
+Map::~Map()
 {
-	std::list<Block> copyL(bl);//required because bl const
-	std::list <Block>::iterator it;
+	for (auto&& obst : obstList)					//deleting pointers allocated in list
+	{
+		delete obst;
+	}
+	obstList.clear();
+													//First *succes is part of list so it is already deleted
+}
+
+std::ostream& operator<<(std::ostream& os,const std::list <Obstacle*> &bl)
+{
+	std::list<Obstacle*> copyL(bl);//required because bl const
+	std::list<Obstacle*>::iterator it;
 	for (it = copyL.begin(); it != copyL.end(); ++it)
 	{
-		Map::move_cursor(it->show_loc());
-		os << it->show_shape();
+		Map::move_cursor((*it)->show_loc());
+		os << (*it)->show_shape();
 	}
 	return os;
 }
 
-std::ostream& operator<<(std::ostream& os,const std::list <Spikes> &sl)
-{
-	std::list<Spikes> copyL(sl);//required because sl const
-	std::list <Spikes>::iterator it;
-	for (it = copyL.begin(); it != copyL.end(); ++it)
-	{
-		Map::move_cursor(it->show_loc());
-		os << it->show_shape();
-	}
-	return os;
-}
 
 std::ostream& operator<<(std::ostream& os, const Map& m)
 {
-	os << m.blockList;
-	os << m.spikesList;
-
+	os << m.obstList;
 	Map::move_cursor(Coord{ m.limit.x+5,m.limit.y+5 });//put cursor away
 	return os;
 }
@@ -113,19 +115,14 @@ bool Map::input()
 	
 	Coord temp(user.show_loc());
 	move_cursor(temp);
-	std::cout << ' ';
+	std::cout << ' ';//clears place where player was
 	if (user.lift_of_player() > 0)
 	{
 		
 		temp.y -= 1;
-		if (col_with_spikes(temp)) 
+		if (!collision_with_player(temp)) 
 		{ 
-			return 0; 
-		}
-		if (!col_with_blocks(temp))
-		{
 			user.go_jump();
-
 		}
 		else
 		{
@@ -135,8 +132,7 @@ bool Map::input()
 	if (((GetAsyncKeyState(VK_UP)|| GetAsyncKeyState(0x57) || GetAsyncKeyState(VK_SPACE))&& user.lift_of_player()==0)&&user.show_if_jumped()==0)//arrow up or w or space
 	{
 		temp.y -= 1;
-		if (col_with_spikes(temp)) { return 0; }
-		if (!col_with_blocks(temp))
+		if (!collision_with_player(temp))
 		{
 			if (user.lift_of_player() == 0)
 			{
@@ -152,8 +148,7 @@ bool Map::input()
 	if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState(0x44))//arrow right or d
 	{
 		temp.x += 1;
-		if (col_with_spikes(temp)) { return 0; }
-		if (!col_with_blocks(temp))
+		if (!collision_with_player(temp))
 		{
 			user.go_right();
 		}	
@@ -165,16 +160,14 @@ bool Map::input()
 	if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState(0x41))//arrow left or a
 	{
 		temp.x -= 1;
-		if (col_with_spikes(temp)) { return 0; }
-		if (!col_with_blocks(temp))
+		if (!collision_with_player(temp))
 		{
 			user.go_left();
 		}
 		else //if collision then coord shouldn't change
 		{
 			temp.x += 1;
-		}
-			
+		}	
 	}
 	if (GetAsyncKeyState(VK_ESCAPE))
 	{
@@ -187,8 +180,7 @@ bool Map::input()
 	if (user.lift_of_player() == 0)//checks if player is not jumping and does gravity
 	{
 		temp.y += 1;
-		if (col_with_spikes(temp)) { return 0; }
-		if (!col_with_blocks(temp))
+		if (!collision_with_player(temp))
 		{
 				user.go_fall();
 		}
@@ -198,14 +190,10 @@ bool Map::input()
 			temp.y -= 1;
 		}
 	}
-		
-
 		Map::move_cursor(user.show_loc());
 		std::cout << user;
-	
 		Map::move_cursor(Coord{ limit.x + 5,limit.y + 5 });//put cursor away
 		Sleep(100);
-
 	return 1;
 }
 
@@ -214,31 +202,22 @@ bool Map::player_status()
 	if (user.check_if_fail(limit)) { return 0; }//he fails
 	return 1;
 }
-
-bool Map::col_with_spikes(Coord p)
+bool Map::finish_status()
 {
-	std::list <Spikes>::iterator it;
-	for (it = spikesList.begin(); it != spikesList.end(); ++it)
+	
+	return succes->is_Finished();
+}
+
+bool Map::collision_with_player(Coord p)
+{
+	std::list <Obstacle*>::iterator it;
+	for (it = obstList.begin(); it != obstList.end(); ++it)
 	{
-		if (it->location.x == p.x && it->location.y == p.y)
+		if((*it)->collision(user,p))
 		{
-			it->collision(user);
 			return 1;
 		}
 	}
 	return 0;
 }
 
-bool Map::col_with_blocks(Coord p)
-{
-	std::list <Block>::iterator it;
-	for (it = blockList.begin(); it != blockList.end(); ++it)
-	{
-		if (it->location.x == p.x && it->location.y == p.y)
-		{
-			it->collision(user);
-			return 1;
-		}
-	}
-	return 0;
-}

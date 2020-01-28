@@ -127,8 +127,6 @@
     <ClCompile Include="Finish.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapElement.cpp" />
-    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Spikes.cpp" />
   </ItemGroup>

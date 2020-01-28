@@ -18,7 +18,7 @@ bool Player::show_if_jumped()
 }
 void Player::lift_set()
 {
-	lift = 7;
+		lift = 7;
 }
 int Player::lift_of_player()
 {

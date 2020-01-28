@@ -3,53 +3,43 @@
 //#include <iostream>
 #include <fstream>
 #include <string>
-#include <conio.h>
 #include <windows.h>
 #include <list>
-#include <cstddef>
 #include <iterator> 
-#include "MapElement.h"
+#include <exception>
 #include "Block.h"
 #include "Spikes.h"
 #include "Player.h"
+#include "Finish.h"
+
+
+struct NoFileException : public std::exception {
+	const char * what() const throw () {
+		return "Couldn't find file";
+	}
+};
 
 class Map
 {
 
 private:
 	Coord limit;
-	std::list <Block> blockList;
-	std::list <Spikes> spikesList;
+	std::list <Obstacle*> obstList;
 	Player user;
+	Finish *succes;
 public:
 	Map(std::string map_file_name);
+	~Map();
 	
 
-	/*template <class T>
-	friend std::ostream& operator<<(std::ostream& os, const std::list <T> &bl)
-	{
-		
-		std::list<T> copyL(bl);//required because bl const
-		std::list <T>::iterator it;
-		for (it = copyL.begin(); it != copyL.end(); ++it)
-		{
-			Map::move_cursor(it->show_loc());
-			os << it->show_shape();
-		}
-		return os;
-		
-	}*/
-	friend std::ostream& operator<<(std::ostream& os, std::list <Block> &bl);
-	friend std::ostream& operator<<(std::ostream& os, std::list <Spikes> &sl);
+
+	friend std::ostream& operator<<(std::ostream& os, std::list <Obstacle*> &bl);
 	friend std::ostream& operator<<(std::ostream& os, const Map& m);
 	
 	
-	static void move_cursor(Coord p);
-	
-	//void show_user();
-	
+	static void move_cursor(Coord p);	
 	bool input();
 	bool player_status();
-	bool col_with_spikes(Coord p);
-	bool col_with_blocks(Coord p);
+	bool finish_status();
+	bool collision_with_player(Coord p);
 };

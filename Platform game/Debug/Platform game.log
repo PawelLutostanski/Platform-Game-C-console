@@ -1,2 +1,8 @@
-﻿  Finish.cpp
+﻿  main.cpp
+h:\#programy\cp\c++ platform game\platform game\platform game\player.h(9): warning C4309: 'argument': truncation of constant value
+h:\#programy\cp\c++ platform game\platform game\platform game\player.h(10): warning C4309: 'argument': truncation of constant value
+h:\#programy\cp\c++ platform game\platform game\platform game\block.h(8): warning C4309: 'argument': truncation of constant value
+h:\#programy\cp\c++ platform game\platform game\platform game\block.h(9): warning C4309: 'argument': truncation of constant value
+h:\#programy\cp\c++ platform game\platform game\platform game\finish.h(8): warning C4309: 'argument': truncation of constant value
+h:\#programy\cp\c++ platform game\platform game\platform game\finish.h(9): warning C4309: 'argument': truncation of constant value
   Platform game.vcxproj -> H:\#PROGRAMY\cp\C++ platform game\Platform game\Debug\Platform game.exe
